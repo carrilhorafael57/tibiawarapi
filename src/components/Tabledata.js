@@ -8,14 +8,20 @@ const Tabledata = ({ guildName }) => {
   const [druids, setDruids] = useState([]);
   const [knights, setKnights] = useState([]);
   const [paladins, setPaladins] = useState([]);
-  const [allVocations, setallVocations] = useState([]);
-  // const [order, setOrder] = useState("ASC");
+  // const [order, setOrder] = useState(ASC);
+
+  function toTitles(s) {
+    return s.replace(/\w\S*/g, function (t) {
+      return t.charAt(0).toUpperCase() + t.substr(1).toLowerCase();
+    });
+  }
 
   useEffect(() => {
     fetch(`https://api.tibiadata.com/v2/guild/${guildName}.json`)
       .then((res) => res.json())
       .then((resp) => {
-        setHeader(resp.guild.data.name);
+        const headerConvert = toTitles(resp.guild.data.name);
+        setHeader(headerConvert);
         const { members } = resp.guild; // this is destructuring, not state
         const allCharacters = members.reduce((accum, iter) => {
           accum.push(...iter.characters);
@@ -26,11 +32,12 @@ const Tabledata = ({ guildName }) => {
         );
 
         setKnights(
-          membersOnline.filter(
-            (character) =>
-              character.vocation === "Elite Knight" ||
-              character.vocation === "Knight"
-          )
+          membersOnline.sort((a, b) => (a.level < b.level ? 1 : -1)) &&
+            membersOnline.filter(
+              (character) =>
+                character.vocation === "Elite Knight" ||
+                character.vocation === "Knight"
+            )
         );
 
         setDruids(
@@ -56,19 +63,9 @@ const Tabledata = ({ guildName }) => {
               character.vocation === "Sorcerer"
           )
         );
-
-        setallVocations([...sorcerers, ...knights, ...druids, ...paladins]);
       })
       .catch((err) => console.log(err));
-  }, [guildName, header, membersOnline, sorcerers, knights, druids, paladins]);
-
-
-
-  // const sorting = (col) => {
-  //   if (order === "ASC") {
-  //     const sorted = [...];
-  //   }
-  // };
+  }, [guildName, membersOnline]);
 
   return (
     <div className="container">
@@ -76,23 +73,12 @@ const Tabledata = ({ guildName }) => {
       <h1 className="guild-name">{header}</h1>
       <br />
       <table className="table">
-        <thead>
+        <thead className='header-table'>
           <tr>
-            <th>
-              Name <CgArrowsV />
-              {/* onClick={sorting("Name")} */}
-            </th>
-            <th>
-              Level <CgArrowsV />
-              {/* onClick={sorting("Level")} */}
-            </th>
-            <th>
-              Vocation <CgArrowsV /> 
-              {/* onClick={sorting("Vocation")} */}
-            </th>
-            <th>
-              Status <CgArrowsV />
-            </th>
+            <th>Name</th>
+            <th>Level</th>
+            <th>Vocation</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>

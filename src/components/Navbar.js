@@ -4,7 +4,7 @@ import Tabledata from "./Tabledata";
 const Navbar = () => {
   const [input, setInput] = useState("");
   const [guildName, setGuildName] = useState("");
-  // const [fetch, setFetch] = useState(false);
+  const [fetch, setFetch] = useState(false);
 
   const handleInput = (e) => {
     setInput(e.target.value);
@@ -14,7 +14,7 @@ const Navbar = () => {
   const callGuild = (e) => {
     e.preventDefault();
     setGuildName(input);
-    // setFetch(() => !fetch);
+    setFetch(() => !fetch);
     // console.log(fetch);
     setInput("");
   };
@@ -41,7 +41,7 @@ const Navbar = () => {
           </form>
         </div>
       </nav>
-      <Tabledata guildName={guildName} />
+      {fetch && <Tabledata guildName={guildName} />}
     </>
   );
 };
