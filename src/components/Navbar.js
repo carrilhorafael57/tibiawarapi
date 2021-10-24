@@ -23,7 +23,7 @@ const Navbar = () => {
       <nav className="navbar navbar-light bg-light">
         <div className="container-fluid">
           <a className="navbar-brand" href="/">
-            Enemy Hauzidawn
+            Enemies Online
           </a>
           <form className="d-flex">
             <input
@@ -32,12 +32,9 @@ const Navbar = () => {
               placeholder="Search"
               aria-label="Search"
               onChange={handleInput}
-            />
-            <button
-              className="btn btn-outline-success"
-              onClick={callGuild}
               value={input}
-            >
+            />
+            <button className="btn btn-outline-success" onClick={callGuild}>
               Search
             </button>
           </form>

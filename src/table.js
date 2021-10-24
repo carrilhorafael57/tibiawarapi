@@ -1,33 +1,29 @@
 import React, { useState, useEffect } from "react";
 
 const Tabledata = ({ guildName }) => {
-  // const [members, setMembers] = useState([]);
+  const [members, setMembers] = useState([]);
   const [membersOnline, setMembersOnline] = useState([]);
-  const [header, setHeader] = useState("")
 
   useEffect(() => {
     fetch(`https://api.tibiadata.com/v2/guild/${guildName}.json`)
       .then((res) => res.json())
       .then((resp) => {
-        console.log(resp.guild.data.name);
-        const { members } = resp.guild;
+        setMembers(resp.guild.members[1].characters);
         setHeader(resp.guild.data.name);
         const allCharacters = members.reduce((accum, iter) => {
           accum.push(...iter.characters);
           return accum;
         }, []);
-        console.log(members);
-        console.log(allCharacters);
         setMembersOnline(() =>
           allCharacters.filter((player) => player.status !== "offline")
         );
       })
       .catch((err) => console.log(err));
-  }, [guildName]);
+  }, [members, guildName]);
 
   return (
     <div className="container">
-      <h1>{header}</h1>
+      <h1>Enemies Online</h1>
       <table className="table table-bordered">
         <thead>
           <tr>
@@ -38,14 +34,12 @@ const Tabledata = ({ guildName }) => {
           </tr>
         </thead>
         <tbody>
-          {membersOnline.map((d) => (
+          {membersOnline.map((d, id) => (
             <tr
               key={d.id}
               onClick={(e) => {
-                console.log(e.currentTarget.children[0]);
-                navigator.clipboard.writeText(
-                  `exiva "${e.currentTarget.children[0].innerText}`
-                );
+                console.log(this.d.name);
+                navigator.clipboard.writeText(`exiva "${e.target.value}`);
               }}
             >
               <td>{d.name}</td>
