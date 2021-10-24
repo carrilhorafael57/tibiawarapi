@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import Tabledata from "./Tabledata";
 
 const Navbar = () => {
-  const [input, setInput] = useState();
+  const [input, setInput] = useState("");
   const [guildName, setGuildName] = useState("");
-  const [fetch, setFetch] = useState(false);
+  // const [fetch, setFetch] = useState(false);
 
   const handleInput = (e) => {
     setInput(e.target.value);
@@ -14,7 +14,8 @@ const Navbar = () => {
   const callGuild = (e) => {
     e.preventDefault();
     setGuildName(input);
-    setFetch(() => !fetch);
+    // setFetch(() => !fetch);
+    // console.log(fetch);
     setInput("");
   };
 
@@ -29,7 +30,7 @@ const Navbar = () => {
             <input
               className="form-control me-2"
               type="search"
-              placeholder="Search"
+              placeholder="Search for guild"
               aria-label="Search"
               onChange={handleInput}
               value={input}
@@ -40,7 +41,7 @@ const Navbar = () => {
           </form>
         </div>
       </nav>
-      {fetch && <Tabledata guildName={guildName} />}
+      <Tabledata guildName={guildName} />
     </>
   );
 };
